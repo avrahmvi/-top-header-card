@@ -1,32 +1,51 @@
-# Top Header Card
+# 🏷️ Top Header Card
 
-כרטיס Lovelace מותאם אישית ל-Home Assistant: כותרת דינמית (ברכה לפי שעה, אייקון יום/לילה לפי `sun.sun`) ושורת תגים (badges) עם אייקון, צבע, תנאי הצגה ו-tap action — הכל דרך עורך גרפי מובנה, בלי YAML ידני.
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
+[![GitHub Release](https://img.shields.io/github/v/release/avrahmvi/-top-header-card)](https://github.com/avrahmvi/-top-header-card/releases)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## התקנה
+A custom Lovelace card for Home Assistant that replaces the top-of-dashboard heading area with a dynamic greeting, a day/night icon, and a scrollable row of condition-aware badges — all configurable through a built-in visual editor, no YAML required.
 
-### דרך HACS (מומלץ)
-1. HACS → תפריט 3 הנקודות (⋮) → **Custom repositories**
-2. הדבק את כתובת הריפו הזה, סוג: **Dashboard**
-3. חפש "Top Header Card" ברשימת ה-Frontend של HACS → **Download**
-4. רענן את הדפדפן (Ctrl+Shift+R)
+![Top Header Card preview](docs/preview.png)
 
-### התקנה ידנית
-1. הורד את `top-header-card.js` ושים ב-`/config/www/`
-2. Settings → Dashboards → ⋮ → **Resources** → Add resource:
+## ✨ Features
+
+- **Dynamic heading** — greeting text that changes by time of day (morning / afternoon / evening), or a fixed static title
+- **Dynamic icon** — switches automatically between day/night icons based on `sun.sun`, or use a fixed icon
+- **Subtitle binding** — display the state of any entity as a subtitle (e.g. a date/time sensor)
+- **Background styling** — configurable card background color and opacity
+- **Condition-aware badges** — icon-only badges tied to any entity, shown or hidden based on entity state
+- **Tap actions** — `more-info`, `toggle`, `navigate`, `url`, or `perform-action` per badge
+- **Visual editor** — entities and icons are picked from native Home Assistant pickers, not typed by hand
+
+## 📦 Installation
+
+### HACS (recommended)
+
+1. Go to **HACS → ⋮ (top-right menu) → Custom repositories**
+2. Add this repository URL, category: **Dashboard**
+3. Find **Top Header Card** in HACS → **Download**
+4. Hard-refresh your browser (`Ctrl+Shift+R`)
+
+### Manual
+
+1. Download `top-header-card.js` from the [latest release](https://github.com/avrahmvi/-top-header-card/releases)
+2. Copy it to `/config/www/`
+3. Go to **Settings → Dashboards → ⋮ → Resources → Add Resource**
    - URL: `/local/top-header-card.js`
-   - Type: JavaScript Module
+   - Resource type: **JavaScript Module**
 
-## שימוש
+## 🚀 Usage
 
-הוסף כרטיס מסוג **Top Header Card** דרך עורך הדשבורד (Add Card → חפש בשם), או ב-YAML:
+Add a card of type **Top Header Card** via the dashboard editor's **Add Card** dialog, or use YAML:
 
 ```yaml
 type: custom:top-header-card
 heading:
   mode: dynamic
-  morning: בוקר טוב
-  noon: צהריים טובים
-  evening: ערב טוב
+  morning: Good morning
+  noon: Good afternoon
+  evening: Good evening
 heading_style: title
 icon:
   mode: dynamic
@@ -55,18 +74,41 @@ badges:
       action: toggle
 ```
 
-## אפשרויות קונפיגורציה
+## ⚙️ Configuration options
 
-| שדה | תיאור |
-|---|---|
-| `heading.mode` | `static` או `dynamic` (ברכה לפי שעה) |
-| `heading_style` | `title` או `subtitle` |
-| `icon.mode` | `static` או `dynamic` (לפי `sun.sun`) |
-| `subtitle_entity` | entity שהמצב שלו יוצג כתת-כותרת |
-| `background.color` / `background.opacity` | צבע ושקיפות רקע הכרטיס |
-| `badges[].condition` | הצגה מותנית לפי מצב entity |
-| `badges[].tap_action` | `more-info` / `toggle` / `navigate` / `url` / `perform-action` |
+| Name | Type | Default | Description |
+|---|---|---|---|
+| `heading.mode` | string | `dynamic` | `static` or `dynamic` (time-based greeting) |
+| `heading.static` | string | — | Fixed heading text when `mode: static` |
+| `heading.morning` / `noon` / `evening` | string | — | Greeting per time slot when `mode: dynamic` |
+| `heading_style` | string | `title` | `title` or `subtitle` (font weight) |
+| `icon.mode` | string | `dynamic` | `static` or `dynamic` (based on `sun.sun`) |
+| `icon.static` | string | `mdi:home` | Icon shown when `mode: static` |
+| `icon.day` / `icon.night` | string | — | Icons shown when `mode: dynamic` |
+| `subtitle_entity` | string | — | Entity whose state is shown as the subtitle |
+| `background.color` | string | `#1c1c1c` | Card background color |
+| `background.opacity` | number | `100` | Card background opacity (0–100) |
+| `badges` | list | `[]` | List of badge objects (see below) |
 
-## גרסאות
+### Badge object
 
-עדכונים מתפרסמים דרך GitHub Releases. HACS יתריע אוטומטית כשיש גרסה חדשה.
+| Name | Type | Description |
+|---|---|---|
+| `entity` | string | Entity this badge represents |
+| `icon` | string | `mdi:` icon shown on the badge |
+| `color` | string | `green` / `red` / `amber` / `blue` / `purple` / `teal` / `grey` |
+| `condition.entity` / `condition.state` | string | Badge is hidden unless this entity equals this state |
+| `tap_action.action` | string | `more-info` / `toggle` / `navigate` / `url` / `perform-action` |
+| `tap_action.navigation_path` / `url_path` / `perform_action` | string | Target for the above action, when applicable |
+
+## 🔄 Releases
+
+Updates are published via GitHub Releases. HACS will notify you automatically when a new version is available.
+
+## 🐛 Issues & contributions
+
+Found a bug or have an idea? Open an [issue](https://github.com/avrahmvi/-top-header-card/issues) or a pull request.
+
+## 📄 License
+
+MIT
