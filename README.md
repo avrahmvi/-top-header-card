@@ -6,7 +6,7 @@
 
 A custom Lovelace card for Home Assistant that replaces the top-of-dashboard heading area with a dynamic greeting, a day/night icon, and a scrollable row of condition-aware badges — all configurable through a built-in visual editor, no YAML required.
 
-![Top Header Card preview](docs/preview.png)
+![Top Header Card preview](images/card1.png)
 
 ## ✨ Features
 
@@ -73,7 +73,8 @@ badges:
     tap_action:
       action: toggle
 ```
-
+![Top Header Card preview](images/card2.png)
+![Top Header Card preview](images/card3.png)
 ## ⚙️ Configuration options
 
 | Name | Type | Default | Description |
